@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="freboardMapper">
+  
+  <resultMap id="freboardResultSet" type="freboard">
+  	
+  	<result column="BOARD_NO"	 		property="boardNo"/>
+  	<result column="MEMBER_NO" 	 		property="memberNo"/>
+  	<result column="NICKNAME" 	 		property="nickName"/>
+  	<result column="BOARD_TITLE" 		property="boardTitle"/>
+  	<result column="BOARD_CONTENT"  	property="boardContent"/>
+  	<result column="BOARD_VIEW_COUNT" 	property="boardViewCount"/>
+  	<result column="STATUS" 			property="status"/>
+  	<result column="BOARD_TYPE" 		property="boardType"/>
+  	<result column="NOTICE_STATUS" 		property="noticeStatus"/>
+  	<result column="CREATE_DATE" 		property="createDate"/>
+  	<result column="UPDATE_DATE" 		property="updateDate"/>
+  	<result column="FILE_PATH"			property="filePath"/>
+  	<result column="FLAG"				property="flag"/>
+  
+  </resultMap>
+  
+  <!-- 자유게시판 목록 전체 페이지 수 조회 -->
+<select id="selectListCount" resultType="_int">
+	SELECT
+			COUNT(*)
+	FROM
+			TB_BOARD		
+</select>
+  
+  
+  
+  <!-- 자유게시판 목록 조회 쿼리문 -->
+  <select id="selectFreBoardlist" resultMap="freboardResultSet">
+  	SELECT
+	  			BOARD_NO,					/*게시글 번호*/
+	  			BOARD_TITLE,		   		/*게시판 제목*/
+	  			BOARD_CONTENT,				/*게시글 내용*/
+	  			STATUS,													/*게시여부*/
+	  			BOARD_VIEW_COUNT as BOARD_VIEW_COUNT,					/*게시판 조회수*/
+	  			BOARD_TYPE,
+	  			NOTICE_STATUS,											/*공지여부상태*/
+	  			TO_CHAR(CREATE_DATE, 'YYYY.MM.DD') as CREATE_DATE,     /*작성 날짜*/
+	  			TO_CHAR(CREATE_DATE, 'YYYY.MM.DD') as UPDATE_DATE,
+	  				(SELECT NICKNAME FROM MEMBER 
+	  								  WHERE	 MEMBER_NO = MEMBER_NO 	/* 멤버(관리자)테이블*/
+	  								  AND ROWNUM = 1) AS NICKNAME,
+	  			
+	  			(SELECT FILE_PATH FROM TB_ATTACHMENT
+                                    WHERE   FILE_NO = FILE_NO
+                                    AND ROWNUM  =  1) AS FILE_PATH
+	  								  
+	  	FROM    	TB_BOARD 
+	  						  WHERE BOARD_TYPE = 'A'
+	  	ORDER
+	  		BY
+	  			     CREATE_DATE DESC,
+	  			     BOARD_NO DESC	
+  
+  </select>
+  
+  <!-- 자유게시판 등록 -->
+  <insert id="regFreBoard" parameterType="freboard">
+  	INSERT  INTO
+  					TB_BOARD
+  					(
+  					BOARD_NO,
+  					BOARD_TITLE,
+  					BOARD_CONTENT,
+  					CREATE_DATE,
+  					STATUS,
+  					MEMBER_NO,
+  					BOARD_TYPE,
+  					FILE_PATH
+  					)
+  VALUES
+  					(
+  					SEQ_BOARDNO.NEXTVAL,	<!--게시물 번호 -->
+  					#{boardTitle},		<!--제목 -->
+  					#{boardContent},	<!-- 내용 -->
+  					SYSDATE,	<!-- 작성날짜-->
+  					#{status},	<!-- 공지여부상태 'Y','N'-->
+  					1,		<!-- 작성자(관리자)-->
+  					#{boardType},	<!-- 게시물 유형-->
+  					#{filePath}		<!-- 첨부파일-->
+  					)
+  
+  </insert>
+  
+  <!-- 자유게시판 상세조회 시 조회수 증가  -->
+  <insert id="increaseboardViewCount" parameterType="_int">
+  	UPDATE TB_BOARD
+  	SET   BOARD_VIEW_COUNT = (BOARD_VIEW_COUNT + 1)
+  	<if test="boardNo != null and !boardNo.equals('')">
+  		WHERE BOARD_NO = #{boardNo}
+  	</if>
+  </insert>
+
+
+<!--  자유게시판 상세조회 쿼리문 -->
+<select id="selectFreBoardOne" parameterType="_int" resultMap="freboardResultSet">
+	SELECT
+			BOARD_NO,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			STATUS,
+			TO_CHAR(CREATE_DATE,'YYYY.MM.DD') AS CREATE_DATE,
+			BOARD_TYPE,
+			(SELECT NICKNAME FROM MEMBER
+							 WHERE MEMBER_NO = MEMBER_NO
+							 AND ROWNUM = 1) AS NICKNAME,
+			(SELECT FILE_PATH FROM TB_ATTACHMENT
+                                    WHERE   FILE_NO = FILE_NO
+                                    AND ROWNUM  =  1) AS FILE_PATH				 
+							 
+							 
+						 
+							 
+	FROM    TB_BOARD
+		
+	WHERE  1=1
+			
+	<if test="boardNo != null and !boardNo.equals('')">
+		AND BOARD_NO = #{boardNo}
+	</if>						 	
+
+</select>
+
+  <!-- 자유게시판 수정쿼리문 -->
+   <insert id="updFreBoard" parameterType="freboard">
+		UPDATE TB_BOARD
+		SET    BOARD_TITLE    = #{boardTitle},
+		   	   BOARD_CONTENT  = #{boardContent},
+		   	   BOARD_TYPE = 'A',
+		   	   STATUS         = #{status},
+		   	   FILE_PATH	  = #{filePath} 
+			WHERE  1=1
+	<if test="boardNo != null and !boardNo.equals('')">
+		AND    
+			BOARD_NO = #{boardNo}
+	</if>	
+	</insert>
+
+
+	<!-- 자유게시판  삭제쿼리문 -->
+	<delete id="delFreBoard" parameterType="freboard">
+			DELETE  FROM  TB_BOARD
+			WHERE   1=1
+	<if test="boardNo != null and !boardNo.equals('')">
+			AND     BOARD_NO = #{boardNo}
+	</if>	
+	</delete>
+
+
+
+
+
+
+
+  
+  </mapper>

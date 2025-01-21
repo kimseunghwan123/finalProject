@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teamMapper">
+	
+	<select id="countTeams" parameterType="hashmap" resultType="_int">
+		SELECT
+		       COUNT(*)
+ 		  FROM
+		       TEAM
+		 WHERE
+		       STATUS = 'Y'
+		 <choose>
+		 <when test="sido != 'all' and sigungu == 'all' and keyword == 'all'">
+		   AND LOCATION LIKE '%' || #{sido} || '%'
+		 </when>
+		 <when test="sido != 'all' and sigungu != 'all' and keyword == 'all'">
+		   AND LOCATION = #{sido} || ' ' || #{sigungu}
+		 </when>
+		 <when test="sido == 'all' and sigungu == 'all' and keyword != 'all'">
+		   AND TEAM_NAME LIKE '%' || #{keyword} || '%'
+		 </when>
+		 <when test="sido != 'all' and sigungu == 'all' and keyword != 'all'">
+		   AND LOCATION LIKE '%' || #{sido} || '%'
+		   AND TEAM_NAME LIKE '%' || #{keyword} || '%'
+		 </when>
+		 <when test="sido != 'all' and sigungu != 'all' and keyword != 'all'">
+		   AND location = #{sido} || ' ' || #{sigungu}
+		   AND TEAM_NAME LIKE '%' || #{keyword} || '%'
+		 </when>
+		 </choose>
+	</select>
+ 	
+ 	
+	<select id="selectTeams" parameterType="hashmap" resultType="team">
+		SELECT 
+		       teamNo,
+		       teamRank,
+		       teamName,
+		       teamType,
+		       location,
+		       teamSkill,
+		       teamMembers,
+		       avgAge,
+		       teamRecord
+		  FROM
+		       (SELECT
+		               DENSE_RANK() OVER(ORDER BY WIN DESC, DRAW DESC, LOSE, TEAM_SKILL) AS teamRank,
+				       TEAM_NO AS teamNo,
+				       TEAM_NAME AS teamName,
+				       TEAM_TYPE AS teamType,
+				       LOCATION AS location,
+				       TEAM_SKILL AS teamSkill,
+		               teamMembers,
+				       AVG_AGE AS avgAge,
+				       WIN || '승 ' || DRAW || '무 ' || LOSE || '패' AS teamRecord
+		          FROM
+		               TEAM
+		          JOIN
+		               V_TEAM_MEMBER USING(TEAM_NO)
+		         ORDER 
+		            BY
+		               teamRank)
+		 <choose>
+		 <when test="sido != 'all' and sigungu == 'all' and keyword == 'all'">
+		 WHERE location LIKE '%' || #{sido} || '%'
+		 </when>
+		 <when test="sido != 'all' and sigungu != 'all' and keyword == 'all'">
+		 WHERE location = #{sido} || ' ' || #{sigungu}
+		 </when>
+		 <when test="sido == 'all' and sigungu == 'all' and keyword != 'all'">
+		 WHERE teamName LIKE '%' || #{keyword} || '%'
+		 </when>
+		 <when test="sido != 'all' and sigungu == 'all' and keyword != 'all'">
+		 WHERE location LIKE '%' || #{sido} || '%'
+		   AND teamName LIKE '%' || #{keyword} || '%'
+		 </when>
+		 <when test="sido != 'all' and sigungu != 'all' and keyword != 'all'">
+		 WHERE location = #{sido} || ' ' || #{sigungu}
+		   AND teamName LIKE '%' || #{keyword} || '%'
+		 </when>
+		 </choose>
+	</select>
+	
+	<select id="selectTeam" parameterType="_int" resultType="team">
+		SELECT
+		       TEAM_NO AS teamNo,
+		       TEAM_NAME AS teamName,
+		       TEAM_TYPE AS teamType,
+		       LOCATION,
+		       TEAM_INFO AS teamInfo,
+		       TEAM_SKILL AS teamSkill,
+		       teamMembers,
+		       AVG_AGE AS avgAge,
+		       UNIFORM,
+		       FD_YEAR AS fdYear,
+		       WIN || '승 ' || DRAW || '무 ' || LOSE || '패' AS teamRecord,
+		       NVL(FILE_PATH, 'resources/images/team/noLogo.jpg') AS teamLogo 
+		  FROM
+		       TEAM
+		  LEFT
+		  JOIN
+		       LOGO USING(TEAM_NO)
+		  JOIN
+       		   V_TEAM_MEMBER USING(TEAM_NO)
+		 WHERE
+		       TEAM_NO = #{teamNo}
+		   AND
+		       STATUS = 'Y'
+	</select>
+	
+	
+
+	
+</mapper>

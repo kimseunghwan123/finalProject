@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="memberMapper">
+  
+  <resultMap id="memberResultSet" type="member">
+  
+  
+  	<result column="MEMBER_NO"     			property="userNo"/>
+	<result column="MEMBER_ID"           	property="userId"/>
+	<result column="PASSWORD"         		property="userPwd"/>
+	<result column="NICKNAME"				property="nickName"/>
+	<result column="AGE"  					property="age"/>
+	<result column="PHONE" 					property="phone"/>
+	<result column="ADDRESS"  				property="address"/>
+	<result column="INFO"  					property="info"/>
+	<result column="SKILL"  				property="skill"/>
+	<result column="POSITION"  				property="position"/>
+	<result column="SUB_POSITION"     		property="subPosition"/>
+	<result column="ENROLL_DATE"     		property="enrollDate"/>
+  	<result column="UPDATE_DATE"     		property="updateDate"/>
+  	<result column="STATUS"     			property="status"/>
+  </resultMap>
+  
+  
+  
+  <!-- 로그인용 쿼리문 -->
+	<select id="login" parameterType="member" resultType="member">
+		SELECT
+		       M.MEMBER_NO userNo,
+               MEMBER_ID userId,
+		       PASSWORD userPwd,
+		       NICKNAME nickName,
+		       AGE age,
+		       PHONE phone,
+		       ADDRESS address,
+		       INFO info,
+		       SKILL skill,
+		       POSITION position,
+		       SUB_POSITION subPosition,
+		       M.ENROLL_DATE enrollDate,
+			   UPDATE_DATE updateDate,
+			   NVL(TEAM_NO, 0) teamNo,
+			   MEMBER_TYPE memberType
+		  FROM
+		       MEMBER M
+          LEFT
+		  JOIN
+		       (SELECT
+                       TEAM_NO,
+                       MEMBER_NO,
+			   		   MEMBER_TYPE 
+                  FROM
+                       TEAM_MEMBER
+                 WHERE 
+                       STATUS = 'Y') T ON(M.MEMBER_NO = T.MEMBER_NO)
+		 WHERE
+		       MEMBER_ID = #{userId}
+		       
+		   AND
+		   		PASSWORD = #{userPwd}    
+		   AND 
+		       M.STATUS = 'Y'
+		       
+	</select>
+	
+	<!-- 회원가입용 쿼리문 -->
+	<insert id="insert" parameterType="member">
+		INSERT
+		  INTO
+		       MEMBER
+		       (
+		       MEMBER_NO,
+		       	MEMBER_ID,
+		       	PASSWORD,
+		       	NICKNAME,
+		       	AGE,
+		       	PHONE,
+		       	ADDRESS,
+		       	INFO,
+		       	SKILL,
+		       	POSITION,
+		       	SUB_POSITION
+		       )
+		VALUES
+		       (
+		       SEQ_MNO.NEXTVAL,
+		       #{userId},
+		       #{userPwd},
+		       #{nickName},
+		       #{age},
+		       #{phone},
+		       #{address},
+		       #{info},
+		       #{skill},
+		       #{position},
+		       #{subPosition}
+		       )
+	</insert>
+	<!-- 회원 정보수정 기능쿼리문 -->
+	<update id="update" parameterType="member">
+		UPDATE
+		       MEMBER
+		   SET
+		       NICKNAME = #{nickName},
+		       AGE = #{age},
+		       PHONE = #{phone},
+		       ADDRESS = #{address},
+		       INFO=#{info},
+		       SKILL=#{skill},
+		       POSITION=#{position},
+		       SUB_POSITION=#{subPosition},
+		       UPDATE_DATE = SYSDATE
+		 WHERE
+			   MEMBER_ID = #{userId}
+	</update>
+	
+	<!-- 회원 탈퇴기능  쿼리문 -->
+	<update id="delete" parameterType="member">
+		UPDATE
+		       MEMBER
+		   SET
+		       STATUS = 'N',
+		       MODIFY_DATE = SYSDATE
+		 WHERE
+		       MEMBER_ID = #{userId}
+	</update>
+	
+	<!-- 아이디 중복 체크용 쿼리문 -->
+	<select id="idCheck" parameterType="member" resultType="member">
+		SELECT
+				COUNT(*)
+		FROM 	MEMBER 
+		WHERE 	MEMBER_ID = #{userId}
+	</select>
+  
+  
+  <!-- 닉네임 중복체크 -->
+		<select id="nicknameCheck" parameterType="member">
+		 	SELECT
+			       COUNT(*)
+			  FROM
+			       MEMBER
+			 WHERE
+			       NICKNAME = #{nickName}
+
+		</select>
+  
+  
+  
+  </mapper>
