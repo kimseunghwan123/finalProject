@@ -20,6 +20,8 @@ public class FreBoard {
 	private String updateDate; 	//수정일
 	private String filePath; // TB_ATTACHMENT /FILE_PATH
 	private int fileNo;
+	private String originName;
+	private String changeName;
 	private String flag;
 	
 	

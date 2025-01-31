@@ -44,13 +44,13 @@ public class FreBoardController {
 	
 	/* 자유게시판 신규 등록하기 */
 	@RequestMapping("freboard.regInfo")
-	public String freboardRegInfo(FreBoard bt, Model model) {
+	public String freboardRegInfo(FreBoard fb, Model model) {
 			System.out.println("[FreBoardController freboardRegInfo]");
-			System.out.println(bt);
+			System.out.println(fb);
 			
 		int regBdt = 0;
 		
-		regBdt = freboardSvc.regFreBoard(bt);
+		regBdt = freboardSvc.regFreBoard(fb);
 		System.out.println(regBdt);
 		
 		if(regBdt > 0) {

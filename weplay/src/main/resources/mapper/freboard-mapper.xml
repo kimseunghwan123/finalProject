@@ -18,6 +18,9 @@
   	<result column="CREATE_DATE" 		property="createDate"/>
   	<result column="UPDATE_DATE" 		property="updateDate"/>
   	<result column="FILE_PATH"			property="filePath"/>
+  	<result column="FILE_NO"			property="fileNo"/>
+  	<result column="ORIGIN_NAME"		property="originName"/>
+  	<result column="CHANGE_NAME"		property="changeName"/>
   	<result column="FLAG"				property="flag"/>
   
   </resultMap>
@@ -72,22 +75,47 @@
   					CREATE_DATE,
   					STATUS,
   					MEMBER_NO,
-  					BOARD_TYPE,
-  					FILE_PATH
+  					BOARD_TYPE					
   					)
   VALUES
   					(
-  					SEQ_BOARDNO.NEXTVAL,	<!--게시물 번호 -->
-  					#{boardTitle},		<!--제목 -->
-  					#{boardContent},	<!-- 내용 -->
-  					SYSDATE,	<!-- 작성날짜-->
-  					#{status},	<!-- 공지여부상태 'Y','N'-->
-  					1,		<!-- 작성자(관리자)-->
-  					#{boardType},	<!-- 게시물 유형-->
-  					#{filePath}		<!-- 첨부파일-->
+  					SEQ_BOARDNO.NEXTVAL,	/*게시물 번호 */
+  					#{boardTitle},		/*제목 */
+  					#{boardContent},	/* 내용 */
+  					SYSDATE,		/* 작성날짜*/
+  					#{status},		/* 공지여부상태 'Y','N'*/
+  					1,				/* 작성자(관리자)*/
+  					'A'				/* 게시물 유형*/
   					)
   
   </insert>
+  
+  
+   <!-- 자유게시판 첨부파일 등록 -->
+  <insert id="regFreBoardFile" parameterType="freboard">
+  	INSERT  INTO
+  					TB_ATTACHMENT
+  					(
+  					FILE_NO,
+  					ORIGIN_NAME,
+  					CHANGE_NAME,
+  					FILE_PATH					
+  					)
+  VALUES
+  					(
+  					SEQ_FILENO.NEXTVAL,
+  					'resources/soccerImage/WEPLAY_SOCCER01.jpg',
+  					'resources/soccerImage/WEPLAY_SOCCER02.jpg',
+  					#{filePath}
+  					)
+  
+  </insert>
+  
+  
+  
+  
+  
+  
   
   <!-- 자유게시판 상세조회 시 조회수 증가  -->
   <insert id="increaseboardViewCount" parameterType="_int">
@@ -134,14 +162,35 @@
 		SET    BOARD_TITLE    = #{boardTitle},
 		   	   BOARD_CONTENT  = #{boardContent},
 		   	   BOARD_TYPE = 'A',
-		   	   STATUS         = #{status},
-		   	   FILE_PATH	  = #{filePath} 
+		   	   STATUS         = #{status}
 			WHERE  1=1
 	<if test="boardNo != null and !boardNo.equals('')">
 		AND    
 			BOARD_NO = #{boardNo}
 	</if>	
 	</insert>
+
+   <!-- 자유게시판 첨부파일 수정쿼리문 -->
+  <insert id="updFreBoardFileUpd" parameterType="freboard">
+  	INSERT  INTO
+  					TB_ATTACHMENT
+  					(
+  					FILE_NO,
+  					ORIGIN_NAME,
+  					CHANGE_NAME,
+  					FILE_PATH					
+  					)
+  VALUES
+  					(
+  					SEQ_BOARDNO.NEXTVAL,
+  					'WEPLAY_SOCCER01.jpg',
+  					'WEPLAY_SOCCER01.jpg',
+  					#{filePath}
+  					)
+  
+  </insert>
+
+
 
 
 	<!-- 자유게시판  삭제쿼리문 -->

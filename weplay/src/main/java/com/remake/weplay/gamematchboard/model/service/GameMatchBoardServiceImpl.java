@@ -18,7 +18,7 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 	@Autowired
 	private GameMatchBoardRepository gamematchboardRepository;
 	
-	//
+	//경기게시판 목록 조회 기능
 	@Override
 	public List<GameMatchBoard> selectGameMatchBoardlist() {
 		System.out.println("[GameMatchBoardServiceImpl selectGameMatchBoardlist]");
@@ -39,6 +39,9 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 		
 		int regGmb = 0;
 		regGmb = gamematchboardRepository.regGameMatchBoardInfo(sqlSession,gb);
+		
+		
+		
 		System.out.println(regGmb);
 		System.out.println("[GameMatchBoardServiceImpl 등록결과]");
 		

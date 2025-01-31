@@ -3,7 +3,7 @@ package com.remake.weplay.attachment.model.vo;
 import lombok.Data;
 
 @Data
-public class attachment {
+public class AttachMent {
 
 	
 	

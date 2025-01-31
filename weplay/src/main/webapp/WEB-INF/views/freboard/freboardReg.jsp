@@ -90,7 +90,7 @@ function regFreBoard(){
 	var inptTitle   = $('#title').val();
 	var inptContent = $('#txtArea_content').val();
 	var chkStatus   = $('input[name="status"]:checked').val();
-	
+	//var chkBoardType =$('input[name="boardType"]:checked').val();
 	// 유효성 검사 함수 호출
 	if(validation()){
 		// confirm 함수는 확인창 결과값으로 TRUE와 FALSE 값을 RETURN 하게 됨.
@@ -191,27 +191,36 @@ function countText(){
 
 // 첨부파일
 function upload(){
-	//debugger
-	console.log( $("#file_110") );
-	console.log($("#file_110")[0].files[0].name);
+		//debugger
+		console.log( $("#file_110") );
+		console.log($("#file_110")[0].files[0].name);
+		
+		// 파일명 받기
+		var fileName = "";
+		if( typeof $("#file_110")[0] != "undefined"){
+			fileName = $("#file_110")[0].files[0].name;
+		}
+		
+		// 파일명 upload 영역의 fileName_110인 요소에 세팅하기
+		$("#fileName_110").val(fileName);
+		alert("첨부파일이 선택되었습니다.");
+	}	
+function resetfile(ths){
 	
-	// 파일명 받기
-	var fileName = "";
-	if( typeof $("#file_110")[0] != "undefined"){
-		fileName = $("#file_110")[0].files[0].name;
-	}
+	var ths = $(ths);
+	ths.parents("tr").cancel();
+	alert("첨부파일이 삭제되었습니다.");
+	}		
 	
-	// 파일명 upload 영역의 fileName_110인 요소에 세팅하기
-	$("#fileName_110").val(fileName);
-	alert("첨부파일이 선택되었습니다.");
-	
-	
-}
 
-function boardType(){
+/* function boardType(){
+	var chkBoardType = $('input[name="boardType"]:checked').val();	
+	// 라디오버튼 (게시여부) 체크여부 확인
+	if( !$('input[name="boardType"]').is(':checked') ){
+		alert("게시유형여부를 선택완료했습니다.");
+		return;	
+} */
 	
-}
-
 
 </script>
 
@@ -277,7 +286,8 @@ function boardType(){
 				<div class="boardTypebox">	
 				<!-- 자유게시판 A -->
 					<label for="boardType_110" tabindex="0">자유게시판A</label>	
-						<input type="checkbox" id="boardType_110" name="boardType" data-file_id="110" tabindex="-1" button="boardType();">	
+						<input type="checkbox" id="boardType_110" name="boardType" 
+						data-file_id="110" tabindex="-1"   button="boardType();">	
 				</div>
 			</td>
 	
@@ -285,7 +295,7 @@ function boardType(){
 	</tr>
          
          
-       <!-- 첨부파일 전체영역 START -->         
+	  <!-- 첨부파일 전체영역 START -->         
 		<tr data-attr_seq="194" data-attr_disp_form_cd="FD" data-attr_calc_typ_cd="null" data-attr_mndt_inpt_yn="Y">	
 			<th><span>첨부파일</span></th>	
 			
@@ -298,7 +308,7 @@ function boardType(){
 					<!-- 업로드 영역 START -->
 					<div class="upload-box">    
 						<input type="text" id="fileName_110" name="filePath" class="upload-name inp" placeholder="선택된 파일 없음" title="선택된 파일 없음" readonly="">
-						<button type="button" id="fileReset" class="btn-reset"><span class="blind">삭제</span></button>	
+						<button type="button" id="fileReset" class="btn-reset" onclick="resetfile(this);">삭제</button>	
 					</div>
 					<!-- 업로드 영역 END -->
 				</div>
@@ -308,13 +318,7 @@ function boardType(){
 					</ul>	
 			</td>
 		</tr> 
-		<!-- 첨부파일 전체영역 END -->               
-	
-          	<!-- 	<li><div class="boardTypebox">	
-					<label for="file_110" tabindex="0">게시판유형선택</label>	
-						<input type="radio" id="boardType_110" name="boardType" data-file_id="110" tabindex="-1" onchange="boardType();">	
-						<input type="hidden" id="apndboardTypeId_110" data-attr_item_sno="" data-prod_id="">	
-			</div></li> -->       
+		<!-- 첨부파일 전체영역 END -->      
         <tr>
             <td colspan="2">
                 <input type="button" id="save"   class="btn btn-primary" value="등록" onclick="regFreBoard();"/>

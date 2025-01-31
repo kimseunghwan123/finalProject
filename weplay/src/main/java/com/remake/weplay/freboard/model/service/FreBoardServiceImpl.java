@@ -35,12 +35,18 @@ public class FreBoardServiceImpl implements FreBoardService {
 	}
 	// 자유게시판 등록 
 	@Override
-	public int regFreBoard(FreBoard bt) {
+	public int regFreBoard(FreBoard fb) {
 		
 		int regBdt = 0;
-		regBdt = freboardRepository.regFreBoardInfo(sqlSession, bt);
+		regBdt = freboardRepository.regFreBoardInfo(sqlSession, fb);
+		
+		//TB_ATTACHMENT SERVICEIMPL만들기
+		 regBdt = freboardRepository.regFreBoardFile(sqlSession, fb);
+		
+		System.out.println("[FreBoardServiceImpl file_Path]"+ fb);
 		System.out.println(regBdt);
 		System.out.println("[FreBoardServiceImpl 등록결과]");
+		
 		return regBdt;
 	}
 
@@ -81,6 +87,11 @@ public class FreBoardServiceImpl implements FreBoardService {
 		
 		int updFbt = 0;
 		updFbt = freboardRepository.updFreBoardInfo(sqlSession, fb);
+		
+		//TB_ATTACHMENT SERVICEIMPL만들기
+		updFbt = freboardRepository.updFreBoardFileUpd(sqlSession, fb);
+		
+		
 		System.out.println(updFbt);
 		return updFbt;
 	}
