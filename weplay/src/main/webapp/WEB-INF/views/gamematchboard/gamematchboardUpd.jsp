@@ -207,7 +207,8 @@ function updGameMatchBoard(eventStatus){
 		// 수정, 삭제인 경우 각각 데이터 세팅
 		if(eventStatus == "UPD"){
 			mappingUrl  = "gamematchboard.updInfo";
-			dataObj 	= {boardTitle : inptTitle, boardContent : inptContent, status : chkStatus, boardNo : boardNo, filePath : filePathImg}
+			dataObj 	= {boardTitle : inptTitle, boardContent : inptContent, status : chkStatus, 
+						   boardNo : boardNo, filePath : filePathImg}
 			rsltMsg     = "게시글이 정상적으로 수정되었습니다.";
 		}
 		if(eventStatus == "DEL"){

@@ -13,61 +13,158 @@
 
 }
 
-#detail-area{
-	width:100%;
-	height:100%;
-	word-break:break-all; /* 줄바꿈 처리 */
+#txtArea_content{
+	width:650px;
+	height:350px;
 }
 
-#detail_title-area{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 20px 60px;
+.th_left{
+    width:475px;
+}
+
+#spn_textcount{
+	float:right;
+}
+
+#td_status_left{
+	float:left;
+	border: 1px solid #17a2b8;
+}
+
+#save{
+    background: #17a2b8;
+    color: #fff;
+    border: 1px solid #17a2b8;
+
+    /* background: cadetblue;
+    color: #fff;
+    border: 1px solid cadetblue; */
+}
+
+
+.radio-btn{
+    position: relative;
+    display: inline-block;
+    margin: 5px 3px;
+}
+
+/* 게시여부 라디오버튼 영역 스타일적용 START */
+.radio-btn-wrap{
+	margin:-5px -4px;
+	float:left;
+}
+
+.radio-btn{
+	margin: 5px 4px;
+}
+
+.radio-btn-wrap .radio-btn input[type="radio"] {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.radio-btn-wrap .radio-btn input[type="radio"]:checked + label{
+    
+    background: #17a2b8;
+    color: #fff;
+    border: 1px solid #17a2b8;
+    
+    /*background: cadetblue;
+    color: #fff;
+    border: 1px solid cadetblue;*/
+}
+
+.radio-btn-wrap .radio-btn label {
+    display: block;
+    height: 40px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #636366;
+    line-height: 38px;
+    border: 1px solid #17a2b8;
+    /*border: 1px solid cadetblue;*/
+    border-radius: 24px;
     box-sizing: border-box;
-    border-bottom: 1px solid #d1d1d7;
-    background-color: #f2f2f2;
+    cursor: pointer;
 }
 
-#detail_content-area{
-	height:400px;
-    padding: 60px;
-    border-bottom: 1px solid #d1d1d7;
+	/* display: block;
+    height: 40px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #636366;
+    line-height: 38px;
+    border: 1px solid #aeaeb2;
+    border-radius: 24px;
+    box-sizing: border-box;
+    cursor: pointer; */
+/* 게시여부 라디오버튼 영역 스타일적용 END */
+
+/* 첨부파일 영역 스타일적용 START */
+.filebox{
+	margin-top:8px;
+}
+
+.filebox label {
+	float:left;
+    display: inline-block;
+    width: 140px;
+    height: 48px;
+    padding: 0 12px;
+    color: #3a3a3d;
+    font-size: 18px;
+    line-height: 48px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #9ca0a1;
+    vertical-align: middle;
+    cursor: pointer;
+    text-align: center;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.filebox .upload-name {
+    display: inline-block;
+    padding: 0 32px 0 12px;
+    background: none;
+    vertical-align: middle;
+    border: 0;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 4px;
+    background-color: #fafafa;
     color: #1a1d1d;
     font-size: 18px;
-    line-height: 26px;
-    white-space: break-spaces;
-}
-.detail_content-area{
-	display:block;
+    line-height: 48px;
+    box-sizing: border-box;
 }
 
-.detail_title_name_td{
-    width: 60%;
-    color: #1a1d1d;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 40px;
-}
-
-.detail_title_date_td{
-	margin-right:0;
-	padding-right:0;
-}
-
-.btn-wrap{
-	display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 40px;
-}
-
-#detail-golist{
-	width:448px;
-	color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+/* 삭제버튼 */
+.btn-reset {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: url(../images/btn/btn_inp_reset.png) 0 0 no-repeat;
 }
 
 .align_center{
@@ -79,6 +176,7 @@
 	font-weight:bold;
 }
 
+/* 첨부파일 영역 스타일적용 END */
 </style>
 <script type="text/javascript">
 
@@ -90,6 +188,7 @@ function regFreBoard(){
 	var inptTitle   = $('#title').val();
 	var inptContent = $('#txtArea_content').val();
 	var chkStatus   = $('input[name="status"]:checked').val();
+	var chkBoardType = $('input[name="boardType"]:checked').val();
 	//var chkBoardType =$('input[name="boardType"]:checked').val();
 	// 유효성 검사 함수 호출
 	if(validation()){
@@ -213,13 +312,13 @@ function resetfile(ths){
 	}		
 	
 
-/* function boardType(){
+/*  function boardType(){
 	var chkBoardType = $('input[name="boardType"]:checked').val();	
 	// 라디오버튼 (게시여부) 체크여부 확인
 	if( !$('input[name="boardType"]').is(':checked') ){
 		alert("게시유형여부를 선택완료했습니다.");
 		return;	
-} */
+}  */
 	
 
 </script>

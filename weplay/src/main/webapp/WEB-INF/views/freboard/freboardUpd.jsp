@@ -209,7 +209,8 @@ function updFreBoard(eventStatus){
 		if(eventStatus == "UPD"){
 			mappingUrl  = "freboard.updInfo";
 			dataObj 	= {boardTitle : inptTitle, boardContent : inptContent,
-							status : chkStatus, boardNo : boardNo, filePath : filePathImg}
+							status : chkStatus, boardNo : boardNo, filePath : filePathImg
+							,boardType : chkboardType}
 			rsltMsg     = "게시글이 정상적으로 수정되었습니다.";
 		}
 		if(eventStatus == "DEL"){
@@ -328,9 +329,15 @@ function upload(){
 	$("#fileName_110").val(fileName);
 	alert("첨부파일이 선택되었습니다.");
 	
-	
 }
 
+/* function boardType(){
+	var chkBoardType = $('input[name="boardType"]:checked').val();	
+	// 라디오버튼 (게시여부) 체크여부 확인
+	if( !$('input[name="boardType"]').is(':checked') ){
+		alert("게시유형여부를 선택완료했습니다.");
+		return;	
+}  */
 </script>
 
 </head>
@@ -424,7 +431,7 @@ function upload(){
 				<div class="boardTypebox">	
 				<!-- 자유게시판 A -->
 					<label for="boardType_110" tabindex="0">자유게시판A</label>	
-						<input type="checkbox" id="boardType_110" name="boardType" data-file_id="110" tabindex="-1" button="boardType();" value="${freboardOne.boardType}">	
+						<input type="checkbox" id="boardType_110" name="boardType" data-file_id="110" tabindex="-1"  value="${freboardOne.boardType}">	
 				</div>
 			</td>
          

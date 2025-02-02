@@ -160,7 +160,7 @@
 		UPDATE TB_BOARD
 		SET    BOARD_TITLE    = #{boardTitle},
 		   	   BOARD_CONTENT  = #{boardContent},
-		   	   BOARD_TYPE = 'A',
+		   	   BOARD_TYPE 	  = 'A',
 		   	   STATUS         = #{status}
 			WHERE  1=1
 	<if test="boardNo != null and !boardNo.equals('')">
