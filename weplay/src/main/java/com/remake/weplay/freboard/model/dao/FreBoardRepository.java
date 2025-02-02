@@ -26,7 +26,7 @@ public class FreBoardRepository {
 	//첨부파일 등록 기능 
 	public int regFreBoardFile(SqlSessionTemplate sqlSession, FreBoard fb) {
 		System.out.println("[FreBoardRepository regFreBoardFile] " + fb);
-		System.out.println("[FreBoardRepository regNoticeFile bt 결과]");
+		System.out.println("[FreBoardRepository regFreBoardFile bt 결과]");
 		return sqlSession.insert("freboardMapper.regFreBoardFile", fb);
 	}
 	

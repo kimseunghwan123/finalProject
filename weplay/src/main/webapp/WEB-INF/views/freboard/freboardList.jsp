@@ -70,7 +70,6 @@ thead ,tbody, .align_center{
 				<th>게시여부</th>
 				<th>조회수</th>
 				<th>게시판유형</th>
-				<th>공지여부상태</th>
 				<th>작성일</th>
 				<th>수정일</th>
 				<th>작성자</th>
@@ -86,7 +85,6 @@ thead ,tbody, .align_center{
                             <td>${ freboard.status }</td>
                             <td>${ freboard.boardViewCount }</td>
                             <td>${ freboard.boardType }</td>
-                            <td>${ freboard.noticeStatus }</td>
                             <td>${ freboard.createDate }</td>
                             <td>${ freboard.updateDate }</td>
                             <td>${ freboard.nickName }</td>

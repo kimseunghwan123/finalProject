@@ -20,6 +20,9 @@
   	<result column="CREATE_DATE" 		property="createDate"/>
   	<result column="UPDATE_DATE" 		property="updateDate"/>
   	<result column="FILE_PATH"			property="filePath"/>
+  	<result column="FILE_NO"			property="fileNo"/>
+  	<result column="ORIGIN_NAME"		property="originName"/>
+  	<result column="CHANGE_NAME"		property="changeName"/>
   	<result column="FLAG"				property="flag"/>
   
   </resultMap>
@@ -93,6 +96,33 @@
   
   </insert>
   
+  
+   <!-- 경기게시판 첨부파일 등록 -->
+  <insert id="regGameMatchBoardFile" parameterType="gamematchboard">
+  	INSERT  INTO
+  					TB_ATTACHMENT
+  					(
+  					FILE_NO,
+  					ORIGIN_NAME,
+  					CHANGE_NAME,
+  					FILE_PATH					
+  					)
+  VALUES
+  					(
+  					SEQ_FILENO.NEXTVAL,
+  					'WEPLAY_SOCCER01.jpg',
+  					'WEPLAY_SOCCER02.jpg',
+  					#{filePath}
+  					)
+  
+  </insert>
+  
+  
+  
+  
+  
+  
+  
   <!-- 경기게시판 상세조회 시 조회수 증가  -->
   <insert id="increaseboardViewCount" parameterType="_int">
   	UPDATE TB_BOARD
@@ -144,6 +174,30 @@
 			BOARD_NO = #{boardNo}
 	</if>	
 	</insert>
+	
+	
+	 <!-- 경기게시판 첨부파일 수정쿼리문 -->
+  <insert id="updGameMatchBoardFileUpd" parameterType="gamematchboard">
+  	INSERT  INTO
+  					TB_ATTACHMENT
+  					(
+  					FILE_NO,
+  					ORIGIN_NAME,
+  					CHANGE_NAME,
+  					FILE_PATH					
+  					)
+  VALUES
+  					(
+  					SEQ_BOARDNO.NEXTVAL,
+  					'WEPLAY_SOCCER01.jpg',
+  					'WEPLAY_SOCCER01.jpg',
+  					#{filePath}
+  					)
+  
+  </insert>
+	
+	
+	
 
 
 	<!-- 공지사항 삭제 -->

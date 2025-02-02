@@ -44,7 +44,6 @@
 	  			STATUS,													/*게시여부*/
 	  			BOARD_VIEW_COUNT as BOARD_VIEW_COUNT,					/*게시판 조회수*/
 	  			BOARD_TYPE,
-	  			NOTICE_STATUS,											/*공지여부상태*/
 	  			TO_CHAR(CREATE_DATE, 'YYYY.MM.DD') as CREATE_DATE,     /*작성 날짜*/
 	  			TO_CHAR(CREATE_DATE, 'YYYY.MM.DD') as UPDATE_DATE,
 	  				(SELECT NICKNAME FROM MEMBER 
@@ -104,8 +103,8 @@
   VALUES
   					(
   					SEQ_FILENO.NEXTVAL,
-  					'resources/soccerImage/WEPLAY_SOCCER01.jpg',
-  					'resources/soccerImage/WEPLAY_SOCCER02.jpg',
+  					'WEPLAY_SOCCER01.jpg',
+  					'WEPLAY_SOCCER02.jpg',
   					#{filePath}
   					)
   
@@ -201,12 +200,5 @@
 			AND     BOARD_NO = #{boardNo}
 	</if>	
 	</delete>
-
-
-
-
-
-
-
   
   </mapper>

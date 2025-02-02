@@ -88,7 +88,7 @@ public class FreBoardServiceImpl implements FreBoardService {
 		int updFbt = 0;
 		updFbt = freboardRepository.updFreBoardInfo(sqlSession, fb);
 		
-		//TB_ATTACHMENT SERVICEIMPL만들기
+		//TB_ATTACHMENT 수정기능 SERVICEIMPL만들기
 		updFbt = freboardRepository.updFreBoardFileUpd(sqlSession, fb);
 		
 		

@@ -46,13 +46,13 @@ public class GameMatchBoardController {
 	
 	/* 경기게시판 신규등록하기*/
 	@RequestMapping("gamematchboard.regInfo")
-	public String gamematchboardRegInfo(GameMatchBoard gb, Model model) {
+	public String gamematchboardRegInfo(GameMatchBoard gmb, Model model) {
 		System.out.println("[GameMatchBoardController gamematchboardregInfo]");
-		System.out.println(gb);
+		System.out.println(gmb);
 		
 		int regGmb = 0;
 		
-		regGmb = gamematchboardSvc.regGameMatchBoard(gb);
+		regGmb = gamematchboardSvc.regGameMatchBoard(gmb);
 		System.out.println(regGmb);
 		
 		if(regGmb > 0) {

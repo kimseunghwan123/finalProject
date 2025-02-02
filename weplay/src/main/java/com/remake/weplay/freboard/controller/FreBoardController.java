@@ -69,12 +69,13 @@ public class FreBoardController {
 								  @RequestParam("flag") String flag,
 								  Model model) {
 		System.out.println("[FreBoardController freboardUpdForm boardNo, flag]"
-							+ boardNo + "," + flag);
+							+ boardNo + ", " + flag);
 		
 		String redirectUrl = "";
 		FreBoard fbd = new FreBoard();
 		fbd = freboardSvc.selectFreBoardOne(boardNo, flag);
 		System.out.println("selectFreBoardOne" + fbd);
+		
 		// 수정, 상세페이지에서 조회내용 보여줄 때 사용할 모델명
 		model.addAttribute("freboardOne", fbd);
 		

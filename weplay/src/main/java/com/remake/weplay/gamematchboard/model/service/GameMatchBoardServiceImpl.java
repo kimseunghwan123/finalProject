@@ -34,14 +34,16 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 	
 	//경기게시판 등록
 	@Override
-	public int regGameMatchBoard(GameMatchBoard gb) {
+	public int regGameMatchBoard(GameMatchBoard gmb) {
 		
 		
 		int regGmb = 0;
-		regGmb = gamematchboardRepository.regGameMatchBoardInfo(sqlSession,gb);
+		regGmb = gamematchboardRepository.regGameMatchBoardInfo(sqlSession,gmb);
 		
+		//TB_ATTACHMENT SERVICEIMPL만들기
+		regGmb = gamematchboardRepository.regGameMatchBoardFile(sqlSession, gmb);
 		
-		
+		System.out.println("[FreBoardServiceImpl file_Path]"+ gmb);
 		System.out.println(regGmb);
 		System.out.println("[GameMatchBoardServiceImpl 등록결과]");
 		
@@ -85,6 +87,12 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 			
 			int updGmb = 0;
 			updGmb = gamematchboardRepository.updGameMatchBoardInfo(sqlSession, gmb);
+			
+			
+			//TB_ATTACHMENT 수정기능 SERVICEIMPL만들기
+			updGmb = gamematchboardRepository.updGameMatchBoardFileUpd(sqlSession, gmb);
+			
+			
 			System.out.println(updGmb);
 			return updGmb;
 		}
