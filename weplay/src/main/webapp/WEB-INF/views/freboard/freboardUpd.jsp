@@ -189,6 +189,7 @@ function updFreBoard(eventStatus){
 	var chkStatus   = $('input[name="status"]:checked').val();
 	var confirmMsg;	// 수정, 삭제 버튼 클릭 시 확인 메시지
 	var filePathImg = $('#fileName_110').val();
+	var chkboardType = $('#boardType_110').val();
 	if(typeof eventStatus != "undefined"){
 		if(eventStatus == "UPD") confirmMsg = "게시글을 수정하시겠습니까?";
 		if(eventStatus == "DEL") confirmMsg = "게시글을 삭제하시겠습니까?";
@@ -210,7 +211,7 @@ function updFreBoard(eventStatus){
 			mappingUrl  = "freboard.updInfo";
 			dataObj 	= {boardTitle : inptTitle, boardContent : inptContent,
 							status : chkStatus, boardNo : boardNo, filePath : filePathImg
-							,boardType : chkboardType}
+							}
 			rsltMsg     = "게시글이 정상적으로 수정되었습니다.";
 		}
 		if(eventStatus == "DEL"){
@@ -331,13 +332,14 @@ function upload(){
 	
 }
 
-/* function boardType(){
-	var chkBoardType = $('input[name="boardType"]:checked').val();	
-	// 라디오버튼 (게시여부) 체크여부 확인
-	if( !$('input[name="boardType"]').is(':checked') ){
-		alert("게시유형여부를 선택완료했습니다.");
-		return;	
-}  */
+function boardType(){
+    console.log( $("#boardType_110") );
+	console.log($("#boardType_110")[0].checkbox[0].name);
+	var chkboardType = "";
+	// 파일명 boardType 영역의 boardType_110인 요소에 세팅하기
+	$("#boardType_110").val(chkboardType);
+	alert("게시유형여부를 선택완료했습니다.");
+}
 </script>
 
 </head>
@@ -463,7 +465,7 @@ function upload(){
         <tr>
             <td colspan="2">
                 <input type="button" id="save"   class="btn btn-primary" value="수정" onclick="updFreBoard('UPD');"/>
-                <input type="button" id="save"   class="btn btn-primary" style="background-color:#eb008b; border-color:#eb008b;" value="삭제" onclick="updFreBoard('DEL')" />
+                <input type="button" id="save"   class="btn btn-primary" style="background-color:#eb008b; border-color:#eb008b;" value="삭제" onclick="updFreBoard('DEL')"/>
                 <input type="button" id="cancle" class="btn btn-light"   value="취소" onclick="history.back();"/>
             </td>
         </tr>		

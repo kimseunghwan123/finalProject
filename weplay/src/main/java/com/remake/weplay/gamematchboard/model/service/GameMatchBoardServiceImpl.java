@@ -36,17 +36,38 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 	@Override
 	public int regGameMatchBoard(GameMatchBoard gmb) {
 		
-		
 		int regGmb = 0;
-		regGmb = gamematchboardRepository.regGameMatchBoardInfo(sqlSession,gmb);
+				// 1. 게시판 테이블 boardNo 시퀀스 생성 ***
+				int bdNo = gamematchboardRepository.selectBoardNo(sqlSession);
+				gmb.setBoardNo(bdNo);
+				System.out.println("boardNo 생성 값 확인 : " + bdNo + ", gamematchboard boardNo : " + gmb.getBoardNo());
 		
-		//TB_ATTACHMENT SERVICEIMPL만들기
-		regGmb = gamematchboardRepository.regGameMatchBoardFile(sqlSession, gmb);
 		
-		System.out.println("[FreBoardServiceImpl file_Path]"+ gmb);
-		System.out.println(regGmb);
-		System.out.println("[GameMatchBoardServiceImpl 등록결과]");
+				//TB_ATTACHMENT SERVICEIMPL만들기
 		
+				// 2. 경기게시판 등록
+				if( gamematchboardRepository.regGameMatchBoardInfo(sqlSession, gmb) > 0 ) {
+					regGmb = 1;
+					System.out.println("success to create GameMatchBoard..." + regGmb);
+					
+					gmb.setOriginName(gmb.getFilePath());
+					gmb.setChangeName(gmb.getFilePath());
+					
+					// 3. 첨부파일 등록
+					if( gamematchboardRepository.regGameMatchBoardFile(sqlSession, gmb) > 0 ) {
+						regGmb = 1;
+						System.out.println("success to create FileInfo..." + regGmb);
+					} else {
+						regGmb = 0;
+						System.out.println("fail to regGameMatchBoardInfo..." + regGmb);
+					}
+					
+				} else {
+					regGmb = 0;
+					System.out.println("fail to regGameMatchBoardInfo..." + regGmb);
+				}
+				
+				//TB_ATTACHMENT SERVICEIMPL만들기    TB_ATTACHMENT > FULE_PATH 의 파일경로 값을 OriginName ,ChangeName 컬럼에 값을 넣기
 		return regGmb;
 	}
 	
@@ -88,7 +109,8 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 			int updGmb = 0;
 			updGmb = gamematchboardRepository.updGameMatchBoardInfo(sqlSession, gmb);
 			
-			
+			gmb.setOriginName(gmb.getFilePath());
+			gmb.setChangeName(gmb.getFilePath());
 			//TB_ATTACHMENT 수정기능 SERVICEIMPL만들기
 			updGmb = gamematchboardRepository.updGameMatchBoardFileUpd(sqlSession, gmb);
 			

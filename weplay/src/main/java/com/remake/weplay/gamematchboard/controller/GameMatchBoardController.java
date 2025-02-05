@@ -92,7 +92,7 @@ public class GameMatchBoardController {
 	}
 	
 	/*경기게시판 수정 기능*/
-	@RequestMapping("gamematchboard.upInfo")
+	@RequestMapping("gamematchboard.updInfo")
 	public String gamematchboardUpdInfo(GameMatchBoard gmb, Model model) {
 		System.out.println("[GameMatchBoardController gamematchboardUpdInfo]");
 		System.out.println(gmb);

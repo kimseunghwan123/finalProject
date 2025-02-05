@@ -146,7 +146,10 @@ board_type-area{
 	    <tr id="board_type-area">
 		   <td class="board_type-area">${gamematchboardOne.boardType}</td>  
 	    </tr>
-	
+	  <!-- 첨부파일영역 -->
+	    <tr id="file_path-area">
+		   <td class="file_path-area">${gamematchboardOne.filePath}</td>  
+	    </tr>
 	</table>
 	<div class="btn-wrap">
 		<input type="button" id="detail-golist" class="btn btn-light"   value="목록으로 이동" onclick="history.back();"/>

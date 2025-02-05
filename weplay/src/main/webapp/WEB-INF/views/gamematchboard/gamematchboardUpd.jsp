@@ -181,7 +181,7 @@ input[type="text"], input[type="password"] {
 
 <script type="text/javascript">
 
-function updGameMatchBoard(eventStatus){
+function  updGameMatchBoard(eventStatus){
 	
 	var inptTitle   = $('#title').val();
 	var inptContent = $('#txtArea_content').val();
@@ -207,8 +207,9 @@ function updGameMatchBoard(eventStatus){
 		// 수정, 삭제인 경우 각각 데이터 세팅
 		if(eventStatus == "UPD"){
 			mappingUrl  = "gamematchboard.updInfo";
-			dataObj 	= {boardTitle : inptTitle, boardContent : inptContent, status : chkStatus, 
-						   boardNo : boardNo, filePath : filePathImg}
+			dataObj 	= {boardTitle : inptTitle, boardContent : inptContent,
+							status : chkStatus, boardNo : boardNo, filePath : filePathImg
+							}
 			rsltMsg     = "게시글이 정상적으로 수정되었습니다.";
 		}
 		if(eventStatus == "DEL"){
@@ -246,7 +247,7 @@ function updGameMatchBoard(eventStatus){
 }
 
 /************************************* 
-* 함수설명 : 공지사항 등록 시 유효성 검사(필수값)
+* 함수설명 : 경기게시판 등록 시 유효성 검사(필수값)
 * 수정내용 : 삭제버튼 클릭 시 유효성 검사 skip처리
 **************************************/
 function validation(eventStatus){
@@ -257,7 +258,7 @@ function validation(eventStatus){
 	// 각 필드 필수값 체크
 	var content = $("#txtArea_content").val();
 	
-	// 공지사항 제목 체크
+	// 경기게시판 제목 체크
 	if($("#title").val() == ""){ 
 		alert("제목을 입력하세요.");
 		$("#title").focus();
@@ -269,31 +270,31 @@ function validation(eventStatus){
 		return;
 	}
 	
-	// 공지사항 내용 체크
+	// 경기게시판 내용 체크
 	if($("#txtArea_content").val() == ""){
-		alert("공지사항 내용을 입력해주세요.");
+		alert("경기게시판 내용을 입력해주세요.");
 		$("#txtArea_content").focus();
 		return;
 	}	
 	
-	// 공지사항 제목 글자수 체크
+	// 경기게시판 제목 글자수 체크
 	if($("#title").val().length > 30){ 
-		alert("공지사항 제목은 최대 30자까지만 입력 가능합니다.");
+		alert("경기게시판 제목은 최대 30자까지만 입력 가능합니다.");
 		$("#title").focus();
 		return;
 	}	
 	
-	// 공지사항 내용 글자수 체크
+	// 경기게시판 내용 글자수 체크
 	if(content.length > 400){
 		$("#txtArea_content").val($("#txtArea_content").val().substring(0, 400));
-		alert("공지사항은 400자까지만 입력 가능합니다.");
+		alert("경기게시판은 400자까지만 입력 가능합니다.");
 		return;
 	}
 	return true;
 }
 
 /*********************************** 
-* 함수설명 : 공지사항 내용 글자 count하는 부분
+* 함수설명 : 경기게시판 내용 글자 count하는 부분
 ************************************/
 function countText(){
 	var content = $("#txtArea_content").val();
@@ -307,7 +308,7 @@ function countText(){
 	// 글자 수 제한
 	if(content.length > 400){
 		$("#txtArea_content").val($("#txtArea_content").val().substring(0, 400));
-		alert("공지사항은 400자까지만 입력 가능합니다.");
+		alert("경기게시판은 400자까지만 입력 가능합니다.");
 		return;
 	}
 }
@@ -327,13 +328,20 @@ function upload(){
 	$("#fileName_110").val(fileName);
 	alert("첨부파일이 선택되었습니다.");
 	
-	
 }
 
+/* function boardType(){
+	var chkBoardType = $('input[name="boardType"]:checked').val();	
+	// 라디오버튼 (게시여부) 체크여부 확인
+	if( !$('input[name="boardType"]').is(':checked') ){
+		alert("게시유형여부를 선택완료했습니다.");
+		return;	
+}  */
 </script>
+
 </head>
 <body>
-<div class="container">
+	<div class="container">
 	
 	<jsp:include page="../common/header.jsp"/>
 	
@@ -351,7 +359,7 @@ function upload(){
 			</tr>
 			
        <tr>
-       		<!-- 게시여부 영역  STRT -->  <!-- notice.getStatus()  -->
+       		<!-- 게시여부 영역  STRT -->  
            	<th class="th_left"><span>게시여부</span></th>
 				<td>
 					<div class="radio-btn-wrap" id="gamematchboard_rdo_wrap">
@@ -375,7 +383,7 @@ function upload(){
 							    <c:if test="${!empty gamematchboardOne.status}">
 									<c:choose>
 									<c:when test="${'N' eq gamematchboardOne.status}">
-										<input type="radio" id="rdo_statusN" name="status" checked="" value="${freboardOne.status}">
+										<input type="radio" id="rdo_statusN" name="status" checked="" value="${gamematchboardOne.status}">
 									</c:when>
 									<c:otherwise>
 										<input type="radio" id="rdo_statusN" name="status" value="N">
@@ -413,6 +421,19 @@ function upload(){
             <td></td>
         </tr>
          
+         
+         
+          <tr>
+		<th><span>게시판 유형</span></th>
+	<tr>
+			<td>
+				<div class="boardTypebox">	
+				<!-- 자유게시판 A -->
+					<label for="boardType_110" tabindex="0">자유게시판B</label>	
+						<input type="checkbox" id="boardType_110" name="boardType" data-file_id="110" tabindex="-1"  value="${gamematchboardOne.boardType}">	
+				</div>
+			</td>
+         
         <!-- 첨부파일 전체영역 START -->         
 		<tr data-attr_seq="194" data-attr_disp_form_cd="FD" data-attr_calc_typ_cd="null" data-attr_mndt_inpt_yn="Y">	
 			<th><span>첨부파일</span></th>	
@@ -425,7 +446,7 @@ function upload(){
 					
 					<!-- 업로드 영역 START -->
 					<div class="upload-box">    
-						<input type="text" id="fileName_110" name="filePath" class="upload-name inp" placeholder="선택된 파일 없음" title="선택된 파일 없음" readonly="">
+						<input type="text" id="fileName_110" name="filePath" class="upload-name inp" placeholder="선택된 파일 없음" title="선택된 파일 없음" readonly="" value="${gamematchboardOne.filePath}">
 						<button type="button" id="fileReset" class="btn-reset"><span class="blind">삭제</span></button>	
 					</div>
 					<!-- 업로드 영역 END -->
@@ -441,7 +462,7 @@ function upload(){
         <tr>
             <td colspan="2">
                 <input type="button" id="save"   class="btn btn-primary" value="수정" onclick="updGameMatchBoard('UPD');"/>
-                <input type="button" id="save"   class="btn btn-primary" style="background-color:#eb008b; border-color:#eb008b;" value="삭제" onclick="updGameMatchBoard('DEL')" />
+                <input type="button" id="save"   class="btn btn-primary" style="background-color:#eb008b; border-color:#eb008b;" value="삭제" onclick="updGameMatchBoard('DEL')"/>
                 <input type="button" id="cancle" class="btn btn-light"   value="취소" onclick="history.back();"/>
             </td>
         </tr>		

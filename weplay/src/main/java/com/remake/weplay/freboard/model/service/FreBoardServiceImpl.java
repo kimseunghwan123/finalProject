@@ -23,10 +23,8 @@ public class FreBoardServiceImpl implements FreBoardService {
 	public List<FreBoard> selectFreBoardlist() {
 		
 		System.out.println("[FreBoardServiceImpl selectFreBoardlist]");
-		
 		List<FreBoard> list = freboardRepository.selectFreBoardlist(sqlSession);
 		System.out.println("FreBoardServiceImpl list결과");
-		
 		for(int i=0; i<list.size(); i++) {
 			System.out.println(list.get(i));
 		}
@@ -38,17 +36,41 @@ public class FreBoardServiceImpl implements FreBoardService {
 	public int regFreBoard(FreBoard fb) {
 		
 		int regBdt = 0;
-		regBdt = freboardRepository.regFreBoardInfo(sqlSession, fb);
 		
-		//TB_ATTACHMENT SERVICEIMPL만들기
-		 regBdt = freboardRepository.regFreBoardFile(sqlSession, fb);
+		// 1. 게시판 테이블 boardNo 시퀀스 생성 ***
+		int bdNo = freboardRepository.selectBoardNo(sqlSession);
+		fb.setBoardNo(bdNo);
+		System.out.println("boardNo 생성 값 확인 : " + bdNo + ", freboard boardNo : " + fb.getBoardNo());
 		
-		System.out.println("[FreBoardServiceImpl file_Path]"+ fb);
-		System.out.println(regBdt);
-		System.out.println("[FreBoardServiceImpl 등록결과]");
+		// 2. 자유게시판 등록
+		if( freboardRepository.regFreBoardInfo(sqlSession, fb) > 0 ) {
+			regBdt = 1;
+			System.out.println("success to create FreBoardInfo..." + regBdt);
+			
+			fb.setOriginName(fb.getFilePath());
+			fb.setChangeName(fb.getFilePath());
+			
+			// 3. 첨부파일 등록
+			if( freboardRepository.regFreBoardFile(sqlSession, fb) > 0 ) {
+				regBdt = 1;
+				System.out.println("success to create FileInfo..." + regBdt);
+			} else {
+				regBdt = 0;
+				System.out.println("fail to regFreBoardInfo..." + regBdt);
+			}
+			
+		} else {
+			regBdt = 0;
+			System.out.println("fail to regFreBoardInfo..." + regBdt);
+		}
 		
+		//TB_ATTACHMENT SERVICEIMPL만들기    TB_ATTACHMENT > FULE_PATH 의 파일경로 값을 OriginName ,ChangeName 컬럼에 값을 넣기
 		return regBdt;
 	}
+	
+	
+	
+	
 
 	//자유 게시판 상세페이지
 	@Override
@@ -89,6 +111,8 @@ public class FreBoardServiceImpl implements FreBoardService {
 		updFbt = freboardRepository.updFreBoardInfo(sqlSession, fb);
 		
 		//TB_ATTACHMENT 수정기능 SERVICEIMPL만들기
+		fb.setOriginName(fb.getFilePath());
+		fb.setChangeName(fb.getFilePath());
 		updFbt = freboardRepository.updFreBoardFileUpd(sqlSession, fb);
 		
 		

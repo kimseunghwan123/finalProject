@@ -5,66 +5,166 @@
 <head>
 <meta charset="UTF-8">
 <title>위플레이 > 경기게시판 > 등록</title>
+
 <style>
+
 .align_center{
     color: #1e90ff;
 
 }
-#detail-area{
-	width:100%;
-	height:100%;
-	word-break:break-all; /* 줄바꿈 처리 */
+
+#txtArea_content{
+	width:650px;
+	height:350px;
 }
 
-#detail_title-area{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 20px 60px;
+.th_left{
+    width:475px;
+}
+
+#spn_textcount{
+	float:right;
+}
+
+#td_status_left{
+	float:left;
+	border: 1px solid #17a2b8;
+}
+
+#save{
+    background: #17a2b8;
+    color: #fff;
+    border: 1px solid #17a2b8;
+
+    /* background: cadetblue;
+    color: #fff;
+    border: 1px solid cadetblue; */
+}
+
+
+.radio-btn{
+    position: relative;
+    display: inline-block;
+    margin: 5px 3px;
+}
+
+/* 게시여부 라디오버튼 영역 스타일적용 START */
+.radio-btn-wrap{
+	margin:-5px -4px;
+	float:left;
+}
+
+.radio-btn{
+	margin: 5px 4px;
+}
+
+.radio-btn-wrap .radio-btn input[type="radio"] {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.radio-btn-wrap .radio-btn input[type="radio"]:checked + label{
+    
+    background: #17a2b8;
+    color: #fff;
+    border: 1px solid #17a2b8;
+    
+    /*background: cadetblue;
+    color: #fff;
+    border: 1px solid cadetblue;*/
+}
+
+.radio-btn-wrap .radio-btn label {
+    display: block;
+    height: 40px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #636366;
+    line-height: 38px;
+    border: 1px solid #17a2b8;
+    /*border: 1px solid cadetblue;*/
+    border-radius: 24px;
     box-sizing: border-box;
-    border-bottom: 1px solid #d1d1d7;
-    background-color: #f2f2f2;
+    cursor: pointer;
 }
 
-#detail_content-area{
-	height:400px;
-    padding: 60px;
-    border-bottom: 1px solid #d1d1d7;
+	/* display: block;
+    height: 40px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #636366;
+    line-height: 38px;
+    border: 1px solid #aeaeb2;
+    border-radius: 24px;
+    box-sizing: border-box;
+    cursor: pointer; */
+/* 게시여부 라디오버튼 영역 스타일적용 END */
+
+/* 첨부파일 영역 스타일적용 START */
+.filebox{
+	margin-top:8px;
+}
+
+.filebox label {
+	float:left;
+    display: inline-block;
+    width: 140px;
+    height: 48px;
+    padding: 0 12px;
+    color: #3a3a3d;
+    font-size: 18px;
+    line-height: 48px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #9ca0a1;
+    vertical-align: middle;
+    cursor: pointer;
+    text-align: center;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.filebox .upload-name {
+    display: inline-block;
+    padding: 0 32px 0 12px;
+    background: none;
+    vertical-align: middle;
+    border: 0;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 4px;
+    background-color: #fafafa;
     color: #1a1d1d;
     font-size: 18px;
-    line-height: 26px;
-    white-space: break-spaces;
-}
-.detail_content-area{
-	display:block;
+    line-height: 48px;
+    box-sizing: border-box;
 }
 
-.detail_title_name_td{
-    width: 60%;
-    color: #1a1d1d;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 40px;
-}
-
-.detail_title_date_td{
-	margin-right:0;
-	padding-right:0;
-}
-
-.btn-wrap{
-	display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 40px;
-}
-
-#detail-golist{
-	width:448px;
-	color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+/* 삭제버튼 */
+.btn-reset {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: url(../images/btn/btn_inp_reset.png) 0 0 no-repeat;
 }
 
 .align_center{
@@ -76,8 +176,8 @@
 	font-weight:bold;
 }
 
+/* 첨부파일 영역 스타일적용 END */
 </style>
-
 <script type="text/javascript">
 
 /************************ 
@@ -88,7 +188,8 @@ function regGameMatchBoard(){
 	var inptTitle   = $('#title').val();
 	var inptContent = $('#txtArea_content').val();
 	var chkStatus   = $('input[name="status"]:checked').val();
-	
+	var chkBoardType = $('input[name="boardType"]:checked').val();
+	//var chkBoardType =$('input[name="boardType"]:checked').val();
 	// 유효성 검사 함수 호출
 	if(validation()){
 		// confirm 함수는 확인창 결과값으로 TRUE와 FALSE 값을 RETURN 하게 됨.
@@ -145,14 +246,14 @@ function validation(){
 	
 	// 경기게시판 내용 체크
 	if($("#txtArea_content").val() == ""){
-		alert("자유게시판 내용을 입력해주세요.");
+		alert("경기게시판 내용을 입력해주세요.");
 		$("#txtArea_content").focus();
 		return;
 	}	
 	
-	// 자유게시판 제목 글자수 체크
+	// 경기게시판 제목 글자수 체크
 	if($("#title").val().length > 40){ 
-		alert("자유게시판 제목은 최대 40자까지만 입력 가능합니다.");
+		alert("경기게시판 제목은 최대 40자까지만 입력 가능합니다.");
 		$("#title").focus();
 		return;
 	}
@@ -160,14 +261,14 @@ function validation(){
 	// 경기게시판 내용 글자수 체크
 	if(content.length > 400){
 		$("#txtArea_content").val($("#txtArea_content").val().substring(0, 400));
-		alert("자유게시판은 400자까지만 입력 가능합니다.");
+		alert("경기게시판은 400자까지만 입력 가능합니다.");
 		return;
 	}
 	return true;
 }
 
 /*********************************** 
-* 함수설명 : 자유게시판 내용 글자 count하는 부분
+* 함수설명 : 경기게시판 내용 글자 count하는 부분
 ************************************/
 function countText(){
 
@@ -189,27 +290,36 @@ function countText(){
 
 // 첨부파일
 function upload(){
-	//debugger
-	console.log( $("#file_110") );
-	console.log($("#file_110")[0].files[0].name);
+		//debugger
+		console.log( $("#file_110") );
+		console.log($("#file_110")[0].files[0].name);
+		
+		// 파일명 받기
+		var fileName = "";
+		if( typeof $("#file_110")[0] != "undefined"){
+			fileName = $("#file_110")[0].files[0].name;
+		}
+		
+		// 파일명 upload 영역의 fileName_110인 요소에 세팅하기
+		$("#fileName_110").val(fileName);
+		alert("첨부파일이 선택되었습니다.");
+	}	
+function resetfile(ths){
 	
-	// 파일명 받기
-	var fileName = "";
-	if( typeof $("#file_110")[0] != "undefined"){
-		fileName = $("#file_110")[0].files[0].name;
-	}
+	var ths = $(ths);
+	ths.parents("tr").cancel();
+	alert("첨부파일이 삭제되었습니다.");
+	}		
 	
-	// 파일명 upload 영역의 fileName_110인 요소에 세팅하기
-	$("#fileName_110").val(fileName);
-	alert("첨부파일이 선택되었습니다.");
-	
-	
-}
 
-function boardType(){
+/*  function boardType(){
+	var chkBoardType = $('input[name="boardType"]:checked').val();	
+	// 라디오버튼 (게시여부) 체크여부 확인
+	if( !$('input[name="boardType"]').is(':checked') ){
+		alert("게시유형여부를 선택완료했습니다.");
+		return;	
+}  */
 	
-}
-
 
 </script>
 
@@ -221,7 +331,7 @@ function boardType(){
 	<jsp:include page="../common/header.jsp"/>
 	<br>
 	<div class="align_center">
-		<h2 class="board-basic">경기게시판</h2>
+		<h2 class="board-basic">자유게시판</h2>
 	</div>
 	
 	<!-- FORM 영역 START -->
@@ -253,7 +363,7 @@ function boardType(){
         </tr>			
 			
        <tr>
-            <th><span>내용</span>	</th>
+            <th><span>내용</span></th>
             <td>
                 <textarea rows="10" cols="30" id="txtArea_content" name="boardContent" onkeyup="countText();"></textarea>
             </td>
@@ -267,7 +377,24 @@ function boardType(){
             <td></td>
         </tr>
          
-       <!-- 첨부파일 전체영역 START -->         
+         
+    <tr>
+		<th><span>게시판 유형</span></th>
+	<tr>
+			<td>
+				<div class="boardTypebox">	
+				<!-- 자유게시판 A -->
+					<label for="boardType_110" tabindex="0">자유게시판B</label>	
+						<input type="checkbox" id="boardType_110" name="boardType" 
+						data-file_id="110" tabindex="-1"   button="boardType();">	
+				</div>
+			</td>
+	
+	
+	</tr>
+         
+         
+	  <!-- 첨부파일 전체영역 START -->         
 		<tr data-attr_seq="194" data-attr_disp_form_cd="FD" data-attr_calc_typ_cd="null" data-attr_mndt_inpt_yn="Y">	
 			<th><span>첨부파일</span></th>	
 			
@@ -280,9 +407,17 @@ function boardType(){
 					<!-- 업로드 영역 START -->
 					<div class="upload-box">    
 						<input type="text" id="fileName_110" name="filePath" class="upload-name inp" placeholder="선택된 파일 없음" title="선택된 파일 없음" readonly="">
-						<button type="button" id="fileReset" class="btn-reset"><span class="blind">삭제</span></button>	
+						<button type="button" id="fileReset" class="btn-reset" onclick="resetfile(this);">삭제</button>	
 					</div>
 					<!-- 업로드 영역 END -->
+					<form>   
+ 						<input type = "file" name = "originName"/>
+					</form>
+					<form>   
+ 						<input type = "file" name = "changeName"/>
+					</form>
+					
+					
 				</div>
 					
 					<ul class="list-text interval bullet">	
@@ -290,29 +425,7 @@ function boardType(){
 					</ul>	
 			</td>
 		</tr> 
-		<!-- 첨부파일 전체영역 END -->               
-	<tr>
-		<th><span>게시판 유형</span></th>
-	<tr>
-			<td>
-				<div class="boardTypebox">	
-				<!-- 경기게시판 B -->
-					  <label for="boardType_110" tabindex="0">경기게시판B</label>	
-						<input type="checkbox" id="apndboardTypeId_110"  data-file_id="110" tabindex="-1" button="boardType();">
-				</div>
-			</td>
-	
-				
-	
-	
-	
-	
-	</tr>
-          	<!-- 	<li><div class="boardTypebox">	
-					<label for="file_110" tabindex="0">게시판유형선택</label>	
-						<input type="radio" id="boardType_110" name="boardType" data-file_id="110" tabindex="-1" onchange="boardType();">	
-						<input type="hidden" id="apndboardTypeId_110" data-attr_item_sno="" data-prod_id="">	
-			</div></li> -->       
+		<!-- 첨부파일 전체영역 END -->      
         <tr>
             <td colspan="2">
                 <input type="button" id="save"   class="btn btn-primary" value="등록" onclick="regGameMatchBoard();"/>
@@ -325,6 +438,16 @@ function boardType(){
 	<!-- FORM 영역 END -->
 
 	</div>
+
+<!-- 1. 게시판 유형 'A', 'B' 선택  기능수정필요
+	 2. 첨부파일 컬럼 수정 필요  등록 해결됨, 수정 해결됨 ,삭제 해결됨 (등록,수정 freboard, gamematchboard)
+		등록 처리 후  상세보기 , 수정 시 등록 했던 첨부파일 명이 아닌 다른것이 등록됨 
+	 TB_ATTACHMENT 테이블에 FILE_PATH 컬럼 존재함 이것을 등록과 수정할때 쿼리 수정 필요
+	 3. 페이징 처리 해결안됨,
+	 4. 리스트 상세페이지 조회수 증가 기능 필요 만들어야함
+	 5. 로그인 시 관리자(수정,삭제)와 비회원(상세보기) 나누기 필요 만들어야함
+	 6. 댓글 TB_COMMENT 기능 해결안됨 
+	 --> 
 
 
 </body>

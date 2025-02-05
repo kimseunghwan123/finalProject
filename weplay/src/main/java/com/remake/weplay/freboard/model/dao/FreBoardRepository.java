@@ -19,7 +19,7 @@ public class FreBoardRepository {
 	//자유게시판 등록
 	public int regFreBoardInfo(SqlSessionTemplate sqlSession, FreBoard fb) {
 		System.out.println("[FreBoardRepository regFreBoardInfo] " + fb);
-		System.out.println("[FreBoardRepository regNoticeInfo bt 결과]");
+		System.out.println("[FreBoardRepository regFreBoardInfo bt 결과]");
 		return sqlSession.insert("freboardMapper.regFreBoard", fb);
 		
 	}
@@ -48,15 +48,19 @@ public class FreBoardRepository {
 		return sqlSession.insert("freboardMapper.updFreBoard", fb);
 	}
 	//첨부파일 수정기능
-		public int updFreBoardFileUpd(SqlSessionTemplate sqlSession, FreBoard fb) {
-			System.out.println("[FreBoardRepository updFreBoardFileUpd] " + fb);
-			System.out.println("[FreBoardRepository updFreBoardFileUpd bt 결과]");
-			return sqlSession.insert("freboardMapper.updFreBoardFileUpd", fb);
+	public int updFreBoardFileUpd(SqlSessionTemplate sqlSession, FreBoard fb) {
+		System.out.println("[FreBoardRepository updFreBoardFileUpd] " + fb);
+		System.out.println("[FreBoardRepository updFreBoardFileUpd bt 결과]");
+		return sqlSession.insert("freboardMapper.updFreBoardFileUpd", fb);
 		}
 	// 자유게시판 삭제 기능
 	public int delFreBoardInfo(SqlSessionTemplate sqlSession, FreBoard fb) {
 		System.out.println("[FreBoardRepository delFreBoardInfo Vo] " + fb);
 		return sqlSession.insert("freboardMapper.delFreBoard", fb);
+	}
+	// 자유게시판 시퀀스 생성
+	public int selectBoardNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("freboardMapper.selecteBoardNo");
 	}
 	
 	

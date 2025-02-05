@@ -2,8 +2,10 @@ package com.remake.weplay.freboard.model.vo;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Data @Setter @Getter 
 public class FreBoard {
 
 	
@@ -18,6 +20,9 @@ public class FreBoard {
 	private String noticeStatus;	//공지여부상태
 	private String createDate;	//작성일
 	private String updateDate; 	//수정일
+	private int currentPage; //페이징처리 현재 페이지 번호
+	private int startPage;   //페이징처리 시작 페이지 번호
+	private int endPage;     //페이징처리 끝 페이지 번호
 	private String filePath; // TB_ATTACHMENT /FILE_PATH
 	private int fileNo;
 	private String originName;

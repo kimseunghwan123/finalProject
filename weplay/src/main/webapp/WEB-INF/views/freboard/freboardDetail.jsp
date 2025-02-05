@@ -128,7 +128,7 @@ board_type-area{
 	
 	<br>
 	<table id="detail-area">
-
+	    <!-- 컨텐츠영-->
 		<!-- 타이틀 영역 -->
 	    <tr id="detail_title-area">
 	         <td class="detail_title_name_td" width="500" colspan="3">${freboardOne.boardTitle}</td>

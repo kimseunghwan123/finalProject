@@ -62,5 +62,8 @@ public class GameMatchBoardRepository {
 			return sqlSession.insert("gamematchboardMapper.delGameMatchBoard", gmb);
 		}	
 		
-		
+		// 경기게시판 시퀀스 생성
+		public int selectBoardNo(SqlSessionTemplate sqlSession) {
+			return sqlSession.selectOne("gamematchboardMapper.selecteBoardNo");
+		}
 }

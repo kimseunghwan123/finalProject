@@ -188,8 +188,9 @@ function regFreBoard(){
 	var inptTitle   = $('#title').val();
 	var inptContent = $('#txtArea_content').val();
 	var chkStatus   = $('input[name="status"]:checked').val();
-	var chkBoardType = $('input[name="boardType"]:checked').val();
-	//var chkBoardType =$('input[name="boardType"]:checked').val();
+	var filePathImg = $('#fileName_110').val();
+	var chkboardType = $('#boardType_110').val();
+	//var chkBoardType = $('input[name="boardType"]:checked').val();
 	// 유효성 검사 함수 호출
 	if(validation()){
 		// confirm 함수는 확인창 결과값으로 TRUE와 FALSE 값을 RETURN 하게 됨.
@@ -312,13 +313,16 @@ function resetfile(ths){
 	}		
 	
 
-/*  function boardType(){
-	var chkBoardType = $('input[name="boardType"]:checked').val();	
-	// 라디오버튼 (게시여부) 체크여부 확인
-	if( !$('input[name="boardType"]').is(':checked') ){
-		alert("게시유형여부를 선택완료했습니다.");
-		return;	
-}  */
+  	 function boardType(){
+  		 
+	  /*   console.log( $("#boardType_110") );
+		console.log($("#boardType_110")[0].checkbox[0].name);
+		var chkboardType = "";
+		// 파일명 boardType 영역의 boardType_110인 요소에 세팅하기
+		$("#boardType_110").val(chkboardType);
+		alert("게시유형여부를 선택완료했습니다."); */
+			
+}  
 	
 
 </script>
@@ -337,6 +341,12 @@ function resetfile(ths){
 	<!-- FORM 영역 START -->
 	<form id="frm" action="freboard.regInfo" >
 		<table class="table-light table-striped text-center" width="100%">
+		
+			<!-- <tr>
+				<th class="th_left"><span>자유게시판번호</span></th>
+				<td><input type="text" id="number" name="boardNo" maxlength="26" style="width:650px;"/></td>
+			</tr> -->
+			
 			<tr>
 				<th class="th_left"><span>제목</span></th>
 				<td><input type="text" id="title" name="boardTitle" maxlength="26" style="width:650px;"/></td>
@@ -379,18 +389,15 @@ function resetfile(ths){
          
          
     <tr>
-		<th><span>게시판 유형</span></th>
-	<tr>
-			<td>
-				<div class="boardTypebox">	
-				<!-- 자유게시판 A -->
-					<label for="boardType_110" tabindex="0">자유게시판A</label>	
-						<input type="checkbox" id="boardType_110" name="boardType" 
-						data-file_id="110" tabindex="-1"   button="boardType();">	
+		<th class="th_left"><span>게시판 유형</span></th>
+		<td>
+				<div class="radio-btn-wrap" id="freboard_rdo_wrap">
+					<span class="radio-btn">
+						<input type="radio" id="boardType" name="boardType" checked="" value="A">	
+							<label for="rdo_statusY">자유게시판A</label>
+					</span>
 				</div>
-			</td>
-	
-	
+            </td>
 	</tr>
          
          
@@ -410,6 +417,19 @@ function resetfile(ths){
 						<button type="button" id="fileReset" class="btn-reset" onclick="resetfile(this);">삭제</button>	
 					</div>
 					<!-- 업로드 영역 END -->
+					<form>   
+ 						<input type = "file" name = "originName"/>
+					</form>
+					<form>   
+ 						<input type = "file" name = "changeName"/>
+					</form>
+					<form>   
+ 						<input type = "file" name = "fileNo"/>
+					</form>
+					 <form>   
+ 						<input type = "file" name = "boardNo"/>
+					</form> 
+					
 				</div>
 					
 					<ul class="list-text interval bullet">	
@@ -432,15 +452,13 @@ function resetfile(ths){
 	</div>
 
 <!-- 1. 게시판 유형 'A', 'B' 선택  기능수정필요
-	 2. 첨부파일 컬럼 수정 필요  등록 해결안됨 수정 해결안됨 (등록,수정 ferboard, gamematchboard)
-	 java.sql.SQLSyntaxErrorException: ORA-00904: 
-	 "FILE_PATH": invalid identifier   
+	 2. 첨부파일 컬럼 수정 필요  등록 해결됨, 수정 해결됨 ,삭제 해결됨 (등록,수정 freboard, gamematchboard)
+		등록 처리 후  상세보기 , 수정 시 등록 했던 첨부파일 명이 아닌 다른것이 등록됨 
 	 TB_ATTACHMENT 테이블에 FILE_PATH 컬럼 존재함 이것을 등록과 수정할때 쿼리 수정 필요
-	 3. 페이징 처리 해결안됨, 
+	 3. 페이징 처리 해결안됨,
 	 4. 리스트 상세페이지 조회수 증가 기능 필요 만들어야함
 	 5. 로그인 시 관리자(수정,삭제)와 비회원(상세보기) 나누기 필요 만들어야함
 	 6. 댓글 TB_COMMENT 기능 해결안됨 
-	 7.
 	 --> 
 
 

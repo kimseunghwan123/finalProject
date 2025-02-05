@@ -70,6 +70,7 @@ thead ,tbody, .align_center{
 				<th>게시여부</th>
 				<th>조회수</th>
 				<th>게시판유형</th>
+				<th>공지여부상태</th>
 				<th>작성일</th>
 				<th>수정일</th>
 				<th>작성자</th>
@@ -85,6 +86,7 @@ thead ,tbody, .align_center{
                             <td>${ freboard.status }</td>
                             <td>${ freboard.boardViewCount }</td>
                             <td>${ freboard.boardType }</td>
+                            <td>${ freboard.noticeStatus }</td>
                             <td>${ freboard.createDate }</td>
                             <td>${ freboard.updateDate }</td>
                             <td>${ freboard.nickName }</td>
@@ -99,17 +101,23 @@ thead ,tbody, .align_center{
 	<script>
 	// loginId null 체크
 	// 수정화면 진입 (관리자전용URL)
-	$('tbody > tr.list').click(function(){
+	//if(loginUser != null){
+		
+	
+//if("A".equals(loginUser.getMemStatus()))
+ 	$('tbody > tr.list').click(function(){
         const boardNo = $(this).children().eq(0).text();
         location.href= 'selectUpdate.freboard?boardNo=' + boardNo + '&flag=' + 'Y';
-      })
-	 
-       	// 상세화면 진입 (회원전용URL)
-     /*     $('tbody > tr.list').click(function(){
+      });
+    		// 상세화면 진입 (회원전용URL)
+      /*    $('tbody > tr.list').click(function(){
            const boardNo = $(this).children().eq(0).text();
            location.href= 'selectUpdate.freboard?boardNo=' + boardNo + '&flag=' + 'N';
-        }); 
-	*/	
+        }); */   
+     /*  }
+	 } */
+       
+		
 	</script>	 
 </body>
 </html>
