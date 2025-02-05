@@ -331,7 +331,7 @@ function resetfile(ths){
 	<jsp:include page="../common/header.jsp"/>
 	<br>
 	<div class="align_center">
-		<h2 class="board-basic">자유게시판</h2>
+		<h2 class="board-basic">경기게시판</h2>
 	</div>
 	
 	<!-- FORM 영역 START -->
@@ -379,18 +379,15 @@ function resetfile(ths){
          
          
     <tr>
-		<th><span>게시판 유형</span></th>
-	<tr>
-			<td>
-				<div class="boardTypebox">	
-				<!-- 자유게시판 A -->
-					<label for="boardType_110" tabindex="0">자유게시판B</label>	
-						<input type="checkbox" id="boardType_110" name="boardType" 
-						data-file_id="110" tabindex="-1"   button="boardType();">	
+		<th class="th_left"><span>게시판 유형</span></th>
+		<td>
+				<div class="radio-btn-wrap" id="freboard_rdo_wrap">
+					<span class="radio-btn">
+						<input type="radio" id="boardType" name="boardType" checked="" value="B">	
+							<label for="rdo_statusY">경기게시판ㅠ</label>
+					</span>
 				</div>
-			</td>
-	
-	
+            </td>
 	</tr>
          
          
