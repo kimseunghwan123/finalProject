@@ -108,12 +108,37 @@ public class FreBoardServiceImpl implements FreBoardService {
 	public int updFreBoard(FreBoard fb) {
 		
 		int updFbt = 0;
-		updFbt = freboardRepository.updFreBoardInfo(sqlSession, fb);
+	//	updFbt = freboardRepository.updFreBoardInfo(sqlSession, fb);
+		
+		// 1. 게시판 테이블 boardNo 시퀀스 생성 ***
+		int bdNo = freboardRepository.selectBoardNo(sqlSession);
+		fb.setBoardNo(bdNo);
+		System.out.println("boardNo 생성 값 확인 : " + bdNo + ", freboard boardNo : " + fb.getBoardNo());
+		
+		// 2. 자유게시판 등록
+		if( freboardRepository.updFreBoardInfo(sqlSession, fb) > 0 ) {
+			updFbt = 1;
+			System.out.println("success to create FreBoardInfo..." + updFbt);
+			
+			fb.setOriginName(fb.getFilePath());
+			fb.setChangeName(fb.getFilePath());
+			
+			// 3. 첨부파일 등록
+			if( freboardRepository.updFreBoardFileUpd(sqlSession, fb) > 0 ) {
+				updFbt = 1;
+				System.out.println("success to create FileInfo..." + updFbt);
+			} else {
+				updFbt = 0;
+				System.out.println("fail to regFreBoardInfo..." + updFbt);
+			}
+			
+		} else {
+			updFbt = 0;
+			System.out.println("fail to regFreBoardInfo..." + updFbt);
+		}
 		
 		//TB_ATTACHMENT 수정기능 SERVICEIMPL만들기
-		fb.setOriginName(fb.getFilePath());
-		fb.setChangeName(fb.getFilePath());
-		updFbt = freboardRepository.updFreBoardFileUpd(sqlSession, fb);
+	//	updFbt = freboardRepository.updFreBoardFileUpd(sqlSession, fb);
 		
 		
 		System.out.println(updFbt);

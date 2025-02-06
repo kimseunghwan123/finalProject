@@ -36,7 +36,9 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 	@Override
 	public int regGameMatchBoard(GameMatchBoard gmb) {
 		
-		int regGmb = 0;
+				int regGmb = 0;
+			
+		
 				// 1. 게시판 테이블 boardNo 시퀀스 생성 ***
 				int bdNo = gamematchboardRepository.selectBoardNo(sqlSession);
 				gmb.setBoardNo(bdNo);
@@ -107,14 +109,43 @@ public class GameMatchBoardServiceImpl implements GameMatchBoardService {
 		public int updGameMatchBoard(GameMatchBoard gmb) {
 			
 			int updGmb = 0;
-			updGmb = gamematchboardRepository.updGameMatchBoardInfo(sqlSession, gmb);
+		//	updGmb = gamematchboardRepository.updGameMatchBoardInfo(sqlSession, gmb);
 			
-			gmb.setOriginName(gmb.getFilePath());
-			gmb.setChangeName(gmb.getFilePath());
+			
+			
+			// 1. 게시판 테이블 boardNo 시퀀스 생성 ***
+			int bdNo = gamematchboardRepository.selectBoardNo(sqlSession);
+			gmb.setBoardNo(bdNo);
+			System.out.println("boardNo 생성 값 확인 : " + bdNo + ", gamematchboard boardNo : " + gmb.getBoardNo());
+	
+	
+			//TB_ATTACHMENT SERVICEIMPL만들기
+	
+			// 2. 경기게시판 수정등록
+			if( gamematchboardRepository.updGameMatchBoardInfo(sqlSession, gmb) > 0 ) {
+				updGmb = 1;
+				System.out.println("success to create GameMatchBoard..." + updGmb);
+				
+				gmb.setOriginName(gmb.getFilePath());
+				gmb.setChangeName(gmb.getFilePath());
+				
+				// 3. 첨부파일 등록
+				if( gamematchboardRepository.updGameMatchBoardFileUpd(sqlSession, gmb) > 0 ) {
+					updGmb = 1;
+					System.out.println("success to create FileInfo..." + updGmb);
+				} else {
+					updGmb = 0;
+					System.out.println("fail to regGameMatchBoardInfo..." + updGmb);
+				}
+				
+			} else {
+				updGmb = 0;
+				System.out.println("fail to regGameMatchBoardInfo..." + updGmb);
+			}
+		//	gmb.setOriginName(gmb.getFilePath());
+		//	gmb.setChangeName(gmb.getFilePath());
 			//TB_ATTACHMENT 수정기능 SERVICEIMPL만들기
-			updGmb = gamematchboardRepository.updGameMatchBoardFileUpd(sqlSession, gmb);
-			
-			
+		//	updGmb = gamematchboardRepository.updGameMatchBoardFileUpd(sqlSession, gmb);
 			System.out.println(updGmb);
 			return updGmb;
 		}
