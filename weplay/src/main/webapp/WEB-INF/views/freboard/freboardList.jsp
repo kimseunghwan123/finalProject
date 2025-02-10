@@ -104,7 +104,7 @@ thead ,tbody, .align_center{
 	//if(loginUser != null){
 		
 	
-//if("A".equals(loginUser.getMemStatus()))
+	//if("A".equals(loginUser.getMemStatus()))
  	$('tbody > tr.list').click(function(){
         const boardNo = $(this).children().eq(0).text();
         location.href= 'selectUpdate.freboard?boardNo=' + boardNo + '&flag=' + 'Y';
